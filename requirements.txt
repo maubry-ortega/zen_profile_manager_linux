@@ -1,0 +1,4 @@
+# VolleyDevByMaubry [7/∞] - Dependencias del entorno
+# "Toda herramienta necesita sus engranajes."
+
+PyGObject
