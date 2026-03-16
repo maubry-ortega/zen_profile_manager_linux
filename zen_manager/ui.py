@@ -15,6 +15,11 @@ class ZenProfileWindow(Gtk.Window):
         self.box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
         self.add(self.box)
 
+        # Información de la versión
+        self.version_label = Gtk.Label()
+        self.update_version_label()
+        self.box.pack_start(self.version_label, False, False, 0)
+
         self.liststore = Gtk.ListStore(str)
         self.refresh_profile_list()
 
@@ -42,6 +47,10 @@ class ZenProfileWindow(Gtk.Window):
         delete_btn = Gtk.Button(label="Eliminar")
         delete_btn.connect("clicked", self.delete_selected_profile)
         button_box.pack_start(delete_btn, True, True, 0)
+
+        update_btn = Gtk.Button(label="Actualizar Zen")
+        update_btn.connect("clicked", self.update_zen)
+        self.box.pack_start(update_btn, False, False, 0)
 
     def refresh_profile_list(self):
         self.liststore.clear()
@@ -72,3 +81,24 @@ class ZenProfileWindow(Gtk.Window):
         if selected:
             profiles.delete_profile(selected)
             self.refresh_profile_list()
+
+    def update_version_label(self):
+        version = controller.get_browser_version()
+        self.version_label.set_markup(f"<b>Versión de Zen:</b> {version}")
+
+    def update_zen(self, widget):
+        dialog = Gtk.MessageDialog(
+            transient_for=self,
+            flags=0,
+            message_type=Gtk.MessageType.INFO,
+            buttons=Gtk.ButtonsType.OK,
+            text="Actualización en curso",
+        )
+        dialog.format_secondary_text(
+            "La actualización se está ejecutando en segundo plano.\n"
+            "Por favor, revisa la terminal para ver el progreso detallado."
+        )
+        controller.update_browser()
+        dialog.run()
+        dialog.destroy()
+        self.update_version_label()

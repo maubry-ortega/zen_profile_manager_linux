@@ -1,11 +1,8 @@
-# VolleyDevByMaubry [8/∞] - Lanzador de escritorio para GNOME
-# "Lo que no se ve en la terminal, cobra vida en el escritorio."
-
 [Desktop Entry]
 Name=Zen Profile Manager
 Comment=Gestor de perfiles para Zen Browser
-Exec=python3 /home/maubry/Desktop/zen_profile_manager/main.py
-Icon=/home/maubry/Desktop/zen_profile_manager/icons/zen-manager-icon.png
+Exec=/home/DevMaubry/zen_profile_manager_linux/.venv/bin/python /home/DevMaubry/zen_profile_manager_linux/main.py
+Icon=/home/DevMaubry/zen_profile_manager_linux/icons/zen-manager-icon.png
 Terminal=false
 Type=Application
 Categories=Network;WebBrowser;

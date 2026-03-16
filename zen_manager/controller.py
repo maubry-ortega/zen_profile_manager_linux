@@ -5,10 +5,11 @@ import subprocess
 import shutil
 import os
 import glob
-from .config import ZEN_BINARY, ZEN_FLATPAK_ID, PROFILE_DIR
+from .config import ZEN_BINARY, PROFILE_DIR
 
 def launch_browser(profile_name):
-    path = os.path.join(PROFILE_DIR, profile_name)
+    # Ruta absoluta para evitar conflictos con el wrapper
+    path = os.path.abspath(os.path.join(PROFILE_DIR, profile_name))
     
     # Crear el directorio del perfil si no existe
     try:
@@ -17,7 +18,10 @@ def launch_browser(profile_name):
         
         # Eliminar cualquier archivo de bloqueo residual
         for lock_file in glob.glob(os.path.join(path, "lock")) + glob.glob(os.path.join(path, "parent.lock")):
-            os.remove(lock_file)
+            try:
+                os.remove(lock_file)
+            except FileNotFoundError:
+                pass
         
         # Verificar permisos de escritura
         test_file = os.path.join(path, "test_write")
@@ -29,26 +33,49 @@ def launch_browser(profile_name):
         
         # Lanzar el navegador con formato explícito
         cmd = [
-            ZEN_BINARY, "run", ZEN_FLATPAK_ID,
-            f"--user-data-dir={path}",
-            "--no-first-run",
+            ZEN_BINARY,
             "--no-remote",
             "--new-instance",
-            "--profile", path  # Parámetro adicional para forzar el perfil
+            "--profile", path
         ]
+
         print(f"Ejecutando comando: {' '.join(cmd)}")
         
-        # Capturar salida para depuración
-        process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        stdout, stderr = process.communicate(timeout=5)
-        if stderr:
-            print(f"Error de Flatpak: {stderr}")
-        if stdout:
-            print(f"Salida de Flatpak: {stdout}")
-            
+        # Ejecutar sin esperar a que termine, para que la instancia siga abierta
+        subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
     except PermissionError:
         raise Exception(f"No se tienen permisos para escribir en {path}")
-    except subprocess.TimeoutExpired:
-        print("El proceso de Flatpak no respondió en 5 segundos, pero puede estar ejecutándose.")
     except Exception as e:
         raise Exception(f"Error al lanzar el navegador: {str(e)}")
+
+def get_browser_version():
+    try:
+        result = subprocess.run([ZEN_BINARY, "--version"], capture_output=True, text=True, check=True)
+        return result.stdout.strip().replace("Mozilla Zen ", "")
+    except Exception:
+        return "Desconocida"
+
+def update_browser():
+    from .config import ZEN_INSTALL_SCRIPT
+    import threading
+    
+    def run_update():
+        try:
+            print("Iniciando actualización de Zen Browser...")
+            # Usar curl para descargar y pipear a bash (método oficial)
+            cmd = f"curl -fsSL {ZEN_INSTALL_SCRIPT} | bash"
+            process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            stdout, stderr = process.communicate()
+            
+            if process.returncode == 0:
+                print("Actualización completada con éxito.")
+            else:
+                print(f"Error en la actualización: {stderr}")
+        except Exception as e:
+            print(f"Error al ejecutar script de actualización: {str(e)}")
+
+    # Ejecutar en un hilo separado para no bloquear la UI
+    thread = threading.Thread(target=run_update)
+    thread.start()
+    return thread

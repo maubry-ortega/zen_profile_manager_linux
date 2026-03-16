@@ -3,6 +3,6 @@
 
 import os
 
-ZEN_BINARY = "flatpak"
-ZEN_FLATPAK_ID = "app.zen_browser.zen"
-PROFILE_DIR = os.path.expanduser("~/.var/app/app.zen_browser.zen/profiles")
+ZEN_BINARY = "zen-browser"
+PROFILE_DIR = os.path.expanduser("~/.zen/profiles")
+ZEN_INSTALL_SCRIPT = "https://github.com/zen-browser/updates-server/raw/refs/heads/main/install.sh"
