@@ -10,7 +10,12 @@ def main():
     win = ZenProfileWindow()
     win.connect("destroy", Gtk.main_quit)
     win.show_all()
-    Gtk.main()
+    try:
+        Gtk.main()
+    except KeyboardInterrupt:
+        print("\nCerrando Zen Profile Manager...")
+        if Gtk.main_level() > 0:
+            Gtk.main_quit()
 
 if __name__ == "__main__":
     main()

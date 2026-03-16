@@ -79,3 +79,12 @@ def update_browser():
     thread = threading.Thread(target=run_update)
     thread.start()
     return thread
+
+def is_profile_running(profile_name):
+    path = os.path.join(PROFILE_DIR, profile_name)
+    # Firefox/Zen use 'lock' on Linux (and parent.lock)
+    lock_files = [os.path.join(path, "lock"), os.path.join(path, "parent.lock")]
+    for lock in lock_files:
+        if os.path.exists(lock):
+            return True
+    return False

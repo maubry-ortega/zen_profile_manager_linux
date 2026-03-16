@@ -1,0 +1,128 @@
+/* Zen Profile Manager - "Zen" Aesthetic */
+
+window {
+    background-color: #1a1b26;
+    color: #c0caf5;
+    font-family: "Inter", "Segoe UI", "Cantarell", sans-serif;
+}
+
+label.version-label {
+    font-size: 10pt;
+    color: #7aa2f7;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+button {
+    background-image: none;
+    background-color: #24283b;
+    color: #c0caf5;
+    border-radius: 8px;
+    border: 1px solid #414868;
+    padding: 8px 16px;
+    font-weight: bold;
+    transition: all 200ms ease-in-out;
+}
+
+button:hover {
+    background-color: #414868;
+    border-color: #7aa2f7;
+    box-shadow: 0 0 5px rgba(122, 162, 247, 0.3);
+}
+
+button:active {
+    background-color: #7aa2f7;
+    color: #1a1b26;
+}
+
+button.suggested-action {
+    background-color: #7aa2f7;
+    color: #1a1b26;
+}
+
+button.suggested-action:hover {
+    background-color: #89b4fa;
+}
+
+button.destructive-action {
+    color: #f7768e;
+}
+
+button.destructive-action:hover {
+    background-color: #f7768e;
+    color: #1a1b26;
+}
+
+entry {
+    background-color: #24283b;
+    color: #c0caf5;
+    border-radius: 6px;
+    border: 1px solid #414868;
+    padding: 8px;
+    margin: 5px 0;
+}
+
+entry:focus {
+    border-color: #7aa2f7;
+    box-shadow: 0 0 0 2px rgba(122, 162, 247, 0.2);
+}
+
+treeview {
+    background-color: #24283b;
+    border-radius: 8px;
+    border: 1px solid #414868;
+}
+
+treeview:selected {
+    background-color: #7aa2f7;
+    color: #1a1b26;
+}
+
+/* ScrolledWindow rounded corners fix */
+scrolledwindow {
+    border-radius: 8px;
+    border: 1px solid #414868;
+    background-color: #1a1b26;
+}
+
+flowbox {
+    padding: 15px;
+    background-color: transparent;
+}
+
+flowboxchild {
+    padding: 5px;
+    border-radius: 12px;
+}
+
+flowboxchild:selected {
+    background-color: rgba(122, 162, 243, 0.2);
+    outline: 1px solid #7aa2f7;
+}
+
+.profile-card {
+    background-color: #24283b;
+    border-radius: 12px;
+    padding: 15px;
+    border: 1px solid #414868;
+    transition: all 200ms ease;
+    min-width: 100px;
+    min-height: 100px;
+}
+
+.profile-card:hover {
+    background-color: #414868;
+}
+
+.profile-icon {
+    font-size: 32pt;
+    color: #7aa2f7;
+    margin-bottom: 5px;
+}
+
+.profile-label {
+    font-weight: bold;
+    font-size: 10pt;
+    color: #c0caf5;
+    margin-top: 0px;
+}

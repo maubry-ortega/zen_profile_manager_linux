@@ -1,8 +1,24 @@
-# VolleyDevByMaubry [4/∞] - Lógica de perfiles
-# "Administrar identidades es orquestar múltiples realidades."
-
 import os
+import json
 from .config import PROFILE_DIR
+
+def get_metadata(name):
+    path = os.path.join(PROFILE_DIR, name, "zen_manager_meta.json")
+    if os.path.exists(path):
+        try:
+            with open(path, "r") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {}
+
+def save_metadata(name, data):
+    path = os.path.join(PROFILE_DIR, name)
+    if not os.path.exists(path):
+        os.makedirs(path)
+    meta_path = os.path.join(path, "zen_manager_meta.json")
+    with open(meta_path, "w") as f:
+        json.dump(data, f)
 
 def list_profiles():
     if not os.path.exists(PROFILE_DIR):
