@@ -34,6 +34,10 @@ class ZenProfileWindow(Gtk.Window):
         self.flowbox.set_selection_mode(Gtk.SelectionMode.SINGLE)
         self.flowbox.set_activate_on_single_click(False)
         self.flowbox.connect("key-press-event", self.on_key_press)
+        
+        # Filtro de búsqueda
+        self.flowbox.set_filter_func(self.filter_profiles)
+        
         scrolled.add(self.flowbox)
 
         self.refresh_profile_list()
@@ -54,9 +58,14 @@ class ZenProfileWindow(Gtk.Window):
         action_box.pack_start(new_btn, True, True, 0)
 
         edit_btn = Gtk.Button()
-        self.setup_btn(edit_btn, "Editar", "document-edit-symbolic")
+        self.setup_btn(edit_btn, "Editar/Stats", "document-edit-symbolic")
         edit_btn.connect("clicked", self.edit_profile_dialog)
         action_box.pack_start(edit_btn, False, False, 0)
+        
+        import_btn = Gtk.Button()
+        self.setup_btn(import_btn, "Importar", "document-open-symbolic")
+        import_btn.connect("clicked", self.import_profile_dialog)
+        action_box.pack_start(import_btn, False, False, 0)
 
         delete_btn = Gtk.Button()
         self.setup_btn(delete_btn, "Eliminar", "user-trash-symbolic")
@@ -79,6 +88,11 @@ class ZenProfileWindow(Gtk.Window):
         update_icon_btn.set_tooltip_text("Actualizar Zen")
         update_icon_btn.connect("clicked", self.update_zen)
         hb.pack_end(update_icon_btn)
+
+        self.search_entry = Gtk.SearchEntry()
+        self.search_entry.set_placeholder_text("Buscar perfil...")
+        self.search_entry.connect("search-changed", self.on_search_changed)
+        hb.pack_start(self.search_entry)
 
         self.version_label = Gtk.Label()
         self.version_label.get_style_context().add_class("version-badge")
@@ -144,6 +158,55 @@ class ZenProfileWindow(Gtk.Window):
             self.launch_selected_profile()
             return True
         return False
+
+    def on_search_changed(self, entry):
+        self.flowbox.invalidate_filter()
+
+    def filter_profiles(self, child):
+        search_text = self.search_entry.get_text().lower()
+        if not search_text:
+            return True
+        profile_name = getattr(child.get_child(), "profile_name", "").lower()
+        return search_text in profile_name
+        
+    def import_profile_dialog(self, widget):
+        dialog = Gtk.FileChooserDialog(
+            title="Importar Perfil",
+            transient_for=self,
+            action=Gtk.FileChooserAction.OPEN,
+        )
+        dialog.add_buttons(
+            Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_OPEN, Gtk.ResponseType.OK
+        )
+        
+        filter_zip = Gtk.FileFilter()
+        filter_zip.set_name("Archivos ZIP")
+        filter_zip.add_pattern("*.zip")
+        dialog.add_filter(filter_zip)
+        
+        response = dialog.run()
+        if response == Gtk.ResponseType.OK:
+            zip_path = dialog.get_filename()
+            dialog.destroy()
+            
+            # Pedir nuevo nombre
+            name_dialog = dialogs.CreateProfileDialog(self)
+            name_dialog.set_title("Nombre para perfil importado")
+            if name_dialog.run() == Gtk.ResponseType.OK:
+                new_name = name_dialog.get_name()
+                if new_name:
+                    success, msg = profile_service.import_from_zip(zip_path, new_name)
+                    if success:
+                        self.refresh_profile_list()
+                    else:
+                        err_dialog = Gtk.MessageDialog(transient_for=self, flags=0, message_type=Gtk.MessageType.ERROR,
+                                                      buttons=Gtk.ButtonsType.OK, text=f"Error al importar: {msg}")
+                        err_dialog.run()
+                        err_dialog.destroy()
+            name_dialog.destroy()
+        else:
+            dialog.destroy()
+
 
     def update_running_status(self):
         for child in self.flowbox.get_children():
