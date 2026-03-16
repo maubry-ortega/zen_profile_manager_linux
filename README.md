@@ -1,44 +1,46 @@
-# Zen Profile Manager
+# 🧘‍♂️ Zen Profile Manager
 
-Zen Profile Manager es una aplicación para gestionar perfiles de configuración en entornos Linux de manera sencilla y eficiente. Permite crear, modificar, activar y eliminar perfiles personalizados para adaptar tu entorno de trabajo rápidamente según tus necesidades.
+Zen Profile Manager es una herramienta elegante y minimalista desarrollada en Python y GTK 3 diseñada para gestionar perfiles de **Zen Browser** de forma eficiente.
 
-## Características principales
-- Gestión de múltiples perfiles de configuración.
-- Interfaz gráfica intuitiva y fácil de usar.
-- Permite alternar entre perfiles con un solo clic.
-- Ideal para usuarios que requieren diferentes entornos de trabajo (desarrollo, oficina, gaming, etc.).
+## ✨ Características
+- **Interfaz "Zen"**: Diseño moderno inspirado en Tokyo Night, limpio y sin distracciones.
+- **Vista en Cuadrícula**: Navega por tus perfiles de forma visual con iconos personalizados.
+- **Personalización Total**: Asocia imágenes propias a cada perfil desde el gestor.
+- **Indicador en Tiempo Real**: Visualiza instantáneamente qué perfiles están abiertos (borde verde brillante).
+- **Actualización Integrada**: Actualiza Zen Browser a la última versión con un solo clic desde la cabecera.
+- **Interacción Ágil**: Lanza perfiles con la tecla **Enter** para un flujo de trabajo rápido.
 
-## Instalación y uso en Linux
+## 🚀 Instalación y Uso
 
-1. **Clona o descarga este repositorio en tu equipo.**
+### 1. Requisitos
+- Python 3.10+
+- GTK 3 (PyGObject)
+- Curl (para actualizaciones automáticas)
 
-2. **Copia el archivo de escritorio para integrarlo en tu sistema:**
-
-```sh
-cp /home/maubry/Desktop/zen_profile_manager/zen-profile-manager.desktop ~/.local/share/applications/
+### 2. Configuración
+Clona el repositorio e instala las dependencias:
+```bash
+git clone https://github.com/maubry-ortega/zen_profile_manager_linux.git
+cd zen_profile_manager_linux
+pip install -r requirements.txt
 ```
 
-3. **Actualiza la base de datos de aplicaciones:**
-
-```sh
-update-desktop-database ~/.local/share/applications/
+### 3. Ejecución
+```bash
+python main.py
 ```
 
-4. **Busca "Zen Profile Manager" en tu menú de aplicaciones y ejecútalo.**
+## 📂 Estructura del Proyecto
+- `zen_manager/ui.py`: Ventana principal y lógica de la interfaz.
+- `zen_manager/components.py`: Componentes visuales reutilizables (Tarjetas).
+- `zen_manager/dialogs.py`: Ventanas modales para creación y edición.
+- `zen_manager/controller.py`: Lógica de sistema y ejecución del navegador.
+- `zen_manager/profiles.py`: Gestión de archivos y metadatos de perfiles.
+- `zen_manager/style.css`: Estilos personalizados (CSS).
 
-## Requisitos
-- Python 3.8 o superior
-- Las dependencias listadas en `requirements.txt` (puedes instalarlas con `pip install -r requirements.txt`)
+## 🛠️ Desarrollo y CI/CD
+Consulta los archivos `ARCHITECTURE.md` para detalles técnicos y `CI_CD.md` para guías de despliegue multiplataforma.
 
-## Ejecución manual
-
-Si prefieres ejecutar la aplicación desde la terminal:
-
-```sh
-python3 main.py
-```
-
-## Autor
+## ✒️ Autor
 Desarrollado con pasión por **VolleyDevByMaubry**.
-
-¡Disfruta de una gestión de perfiles más zen y eficiente!
+*"Donde el orden nace del conocimiento compartido."*

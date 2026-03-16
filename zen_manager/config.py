@@ -1,8 +1,10 @@
-# VolleyDevByMaubry [3/∞] - Configuración global
-# "El orden nace del conocimiento compartido."
+# VolleyDevByMaubry [2/∞] - Módulo de configuración
+# "Toda gran estructura comienza con un lugar que la contenga."
 
 import os
 
+# Binario del navegador
 ZEN_BINARY = "zen-browser"
-PROFILE_DIR = os.path.expanduser("~/.zen/profiles")
-ZEN_INSTALL_SCRIPT = "https://github.com/zen-browser/updates-server/raw/refs/heads/main/install.sh"
+
+# El directorio de perfiles ahora se gestiona en constants.py por defecto,
+# pero aquí podrías sobrescribirlo si fuera necesario.

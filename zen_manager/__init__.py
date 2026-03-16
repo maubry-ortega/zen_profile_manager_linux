@@ -1,2 +1,2 @@
-# VolleyDevByMaubry [2/∞] - Módulo principal
-# "Toda gran estructura comienza con un lugar que la contenga."
+# VolleyDevByMaubry [14/∞] - Inicializador de paquete
+# "La unidad comienza en el silencio de un espacio compartido."
